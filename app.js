@@ -80,20 +80,20 @@ class Bd{
 
         if(despesa.tipo != ''){
             console.log('filtro de tipo')
-            despesasFiltradas.filter(d => d.tipo == despesa.tipo)
+            despesasFiltradas = despesasFiltradas.filter(d => d.tipo == despesa.tipo)
         }
 
         if(despesa.descricao != ''){
             console.log('filtro de descricao')
-            despesasFiltradas = despesasFiltradas.filter(d => d.descricao == despesa.descricao)
+            despesasFiltradas = despesasFiltradas = despesasFiltradas.filter(d => d.descricao == despesa.descricao)
         }
 
         if(despesa.valor != ''){
             console.log('filtro de valor')
-            despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor)
+            despesasFiltradas = despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor)
         } 
         
-        console.log(despesasFiltradas)
+        return despesasFiltradas
     }
 }
 
@@ -145,11 +145,13 @@ function cadastrarDespesa(){
     }
 }
 
-function carregaListaDespesas(){
-    let despesas = Array()
-    despesas = bd.recuperarTodosRegistros()
+function carregaListaDespesas(despesas = Array(), filtro = false){
+    if(despesas.length == 0 && filtro == false){
+        despesas = bd.recuperarTodosRegistros()
+    }
     //selecionando o elemento tbody da tabela
     let listaDespesas = document.getElementById('listaDespesas')
+    listaDespesas.innerHTML = ''
 
     //percorrer o array despesas, listando cada despesa de forma dinâmica
     despesas.forEach(function(d){
@@ -175,6 +177,10 @@ function carregaListaDespesas(){
         linha.insertCell(1).innerHTML = d.tipo
         linha.insertCell(2).innerHTML = d.descricao
         linha.insertCell(3).innerHTML = d.valor
+
+        //criar o botão de exclusão
+        let btn = document.createElement("button")
+        linha.insertCell(4).append(btn)
     })
 }
 
@@ -187,6 +193,7 @@ function pesquisarDespesa(){
     let valor = document.getElementById('valor').value
 
     let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor)
+    let despesas = bd.pesquisar(despesa)
 
-    bd.pesquisar(despesa)
+    this.carregaListaDespesas(despesas) 
 }
