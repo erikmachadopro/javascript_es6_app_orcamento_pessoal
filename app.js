@@ -87,6 +87,15 @@ function cadastrarDespesa(){
         document.getElementById('modal_btn').className = 'btn btn-success'        
 
         $('#modalRegistraDespesa').modal('show')
+
+        //limpar dados do formulário após cadastrar
+        ano.value = ''
+        mes.value = ''
+        dia.value = ''
+        tipo.value = ''
+        descricao.value = ''
+        valor.value = ''
+
     } else{
         document.getElementById('modal_titulo').innerHTML = 'Erro na inclusão do registro'
         document.getElementById('modal_titulo_div').className = 'modal-header text-danger'
