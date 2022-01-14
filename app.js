@@ -200,7 +200,6 @@ function carregaListaDespesas(despesas = Array(), filtro = false){
         console.log(d)
     })
 }
-
 function pesquisarDespesa(){
     let ano = document.getElementById('ano').value
     let mes = document.getElementById('mes').value
