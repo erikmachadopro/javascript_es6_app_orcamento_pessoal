@@ -51,6 +51,7 @@ class Bd{
             if (despesa === null) {
                 continue
             }
+            despesa.id = i // vincular a chave do item do localStorage e console.log
             despesas.push(despesa)
         }
         return despesas
@@ -85,7 +86,7 @@ class Bd{
 
         if(despesa.descricao != ''){
             console.log('filtro de descricao')
-            despesasFiltradas = despesasFiltradas = despesasFiltradas.filter(d => d.descricao == despesa.descricao)
+            despesasFiltradas = despesasFiltradas.filter(d => d.descricao == despesa.descricao)
         }
 
         if(despesa.valor != ''){
@@ -94,6 +95,10 @@ class Bd{
         } 
         
         return despesasFiltradas
+    }
+
+    remover(id){
+        localStorage.removeItem(id)
     }
 }
 
@@ -160,7 +165,7 @@ function carregaListaDespesas(despesas = Array(), filtro = false){
         let linha = listaDespesas.insertRow()
         //criando as colunas (td)
         linha.insertCell(0).innerHTML = `${d.dia}/${d.mes}/${d.ano}`//usando template strings - Interpolação
-        //linha.insertCell(0).innerHtml = d.dia + '/' + d.mes + '/' + d.ano
+        //linha.insertCell(0).innerHTML = d.dia + '/' + d.mes + '/' + d.ano
         // ajustar o que aparece em tipo
         switch(d.tipo){
             case '1': d.tipo = 'Alimentação'
@@ -180,7 +185,19 @@ function carregaListaDespesas(despesas = Array(), filtro = false){
 
         //criar o botão de exclusão
         let btn = document.createElement("button")
+        btn.className = 'btn btn-danger'
+        btn.innerHTML = '<i class="fas fa-times"></i>'
+        btn.id = `id_despesa_${d.id}` // 'id_despesa_' + d.id
+        btn.onclick = function(){
+            //remover a despesa
+            let id = this.id.replace('id_despesa_', '')
+            bd.remover(id)
+
+            window.location.reload()
+        }
         linha.insertCell(4).append(btn)
+
+        console.log(d)
     })
 }
 
